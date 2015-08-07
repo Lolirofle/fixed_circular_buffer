@@ -3,7 +3,7 @@
 extern crate core;
 
 use core::iter::FromIterator;
-use core::mem;
+use core::{iter,mem,slice};
 
 ///Must not be empty
 #[derive(Clone,Eq,PartialEq,Hash)]
@@ -47,13 +47,13 @@ impl<T> CircularBuffer<T>{
 		elem
 	}
 
-	/*pub fn iter<'s>(&'s self) -> iter::Skip<iter::Cycle<slice::Iter<'s,T>>>{
+	pub fn iter_circular<'s>(&'s self) -> iter::Skip<iter::Cycle<slice::Iter<'s,T>>>{
 		self.list.iter().cycle().skip(self.first)
 	}
 
-	pub fn iter_mut<'s>(&'s mut self) -> iter::Skip<iter::Cycle<slice::IterMut<'s,T>>>{
-		self.list.iter_mut().cycle().skip(self.first)
-	}*/
+	pub fn iter<'s>(&'s self) -> iter::Take<iter::Skip<iter::Cycle<slice::Iter<'s,T>>>>{
+		self.iter_circular().take(self.len())
+	}
 
 	#[inline]
 	pub unsafe fn from_raw_parts(list: Box<[T]>,first: usize) -> Self{
@@ -341,4 +341,73 @@ fn test_swap_internal(){
 
 	l.swap_internal(5,0);
 	assert_eq!(&*l.list,&['a','b','c','d']);
+}
+
+#[test]
+fn test_iter(){
+	let l = unsafe{CircularBuffer::from_raw_parts(Box::new(['a','b','c']) as Box<[char]>,0)};
+	let mut i = l.iter();
+
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert!(i.next().is_none());
+
+	let l = unsafe{CircularBuffer::from_raw_parts(Box::new(['a','b','c']) as Box<[char]>,1)};
+	let mut i = l.iter();
+
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert!(i.next().is_none());
+
+	let l = unsafe{CircularBuffer::from_raw_parts(Box::new(['a','b','c']) as Box<[char]>,2)};
+	let mut i = l.iter();
+
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert!(i.next().is_none());
+}
+
+#[test]
+fn test_iter_circular(){
+	let l = unsafe{CircularBuffer::from_raw_parts(Box::new(['a','b','c']) as Box<[char]>,0)};
+	let mut i = l.iter_circular();
+
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+
+	let l = unsafe{CircularBuffer::from_raw_parts(Box::new(['a','b','c']) as Box<[char]>,1)};
+	let mut i = l.iter_circular();
+
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+
+	let l = unsafe{CircularBuffer::from_raw_parts(Box::new(['a','b','c']) as Box<[char]>,2)};
+	let mut i = l.iter_circular();
+
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
+	assert_eq!(*i.next().unwrap(),'c');
+	assert_eq!(*i.next().unwrap(),'a');
+	assert_eq!(*i.next().unwrap(),'b');
 }
