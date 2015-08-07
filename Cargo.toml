@@ -1,11 +1,11 @@
 [package]
 name = "fixed_circular_buffer"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Lolirofle <lolipopple@hotmail.com>"]
 description = "A queue (the abstract data structure) implemented using a fixed size circular buffer"
 #documentation = "..."
 homepage = "https://github.com/Lolirofle/fixed_circular_buffer"
 repository = "https://github.com/Lolirofle/fixed_circular_buffer.git"
 #readme = "README.md"
-keywords = ["queue","fifo","circular","buffer","collection"]
+keywords = ["queue","fifo","circular","ring","cyclic","buffer","collection"]
 license = "LGPL-3.0"

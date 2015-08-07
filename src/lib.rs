@@ -5,7 +5,12 @@ extern crate core;
 use core::iter::FromIterator;
 use core::{iter,mem,slice};
 
-///Must not be empty
+///Fixed size circular/cyclic/ring buffer
+///
+///A FIFO (first in, first out) queue.
+///It cannot represent an empty buffer.
+///
+///When constructed, the internal `list` must not be empty, and cannot contain invalid (e.g. uninitialized) elements.
 #[derive(Clone,Eq,PartialEq,Hash)]
 pub struct CircularBuffer<T>{
 	list: Box<[T]>,
@@ -13,9 +18,13 @@ pub struct CircularBuffer<T>{
 }
 
 impl<T> CircularBuffer<T>{
+	///Returns the number of elements (before starting to loop around).
 	#[inline]
 	pub fn len(&self) -> usize{self.list.len()}
 
+	///Enqueues (push at beginning) the given element at the beginning of the buffer
+	///Dequeues (pop at end) the last element and returns it
+	///This keeps the the buffer length
 	pub fn queue(&mut self,mut elem: T) -> T{
 		let len = self.len();
 		self.first = (self.first + len - 1) % len;
@@ -23,43 +32,62 @@ impl<T> CircularBuffer<T>{
 		elem
 	}
 
+	///Sets the offset for the first element, relative to the currently first element
+	///When `index` is out of range, it loops around
 	pub fn set_first(&mut self,index: usize){
 		self.first = (index + self.first) % self.len();
 	}
 
+	///Returns a reference to the element at the given index
+	///When `index` is out of range, it loops around
 	pub fn get(&self,index: usize) -> &T{
 		let len = self.len();
 		unsafe{self.list.get_unchecked((index + self.first) % len)}
 	}
 
+	///Returns a mutable reference to the element at the given index
+	///When `index` is out of range, it loops around
 	pub fn get_mut(&mut self,index: usize) -> &mut T{
 		let len = self.len();
 		unsafe{self.list.get_unchecked_mut((index + self.first) % len)}
 	}
 
+	///Swaps the two elements at the given indices `a` and `b`.
+	///When `a` or `b` are out of range, they loop around
 	pub fn swap_internal(&mut self,a: usize,b: usize){
 		let len = self.len();
 		self.list.swap((a + self.first) % len,(b + self.first) % len);
 	}
 
+	///Swaps the element at the given index with the specifiied new one.
+	///When `a` or `b` are out of range, they loop around
 	pub fn swap(&mut self,index: usize,mut elem: T) -> T{
 		mem::swap(self.get_mut(index),&mut elem);
 		elem
 	}
 
+	///Returns an iterator over the buffer looping around at the end.
+	///This creates a never ending iterator
 	pub fn iter_circular<'s>(&'s self) -> iter::Skip<iter::Cycle<slice::Iter<'s,T>>>{
 		self.list.iter().cycle().skip(self.first)
 	}
 
+	///Returns an iterator over the buffer without looping around.
 	pub fn iter<'s>(&'s self) -> iter::Take<iter::Skip<iter::Cycle<slice::Iter<'s,T>>>>{
 		self.iter_circular().take(self.len())
 	}
 
+	///Constructs the structure from its raw components
+	///
+	///# Unsafety
+	///
+	///This function is unsafe as there is no guarantee that `first` < `list.len()`, nor whether `list` is non-empty.
 	#[inline]
 	pub unsafe fn from_raw_parts(list: Box<[T]>,first: usize) -> Self{
 		CircularBuffer{list: list,first: first}
 	}
 
+	///Deconstructs the structure into its raw components
 	#[inline]
 	pub fn into_raw_parts(self) -> (Box<[T]>,usize){
 		(self.list,self.first)
