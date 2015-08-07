@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CircularBuffer","Fixed size circular/cyclic/ring buffer"]]});
