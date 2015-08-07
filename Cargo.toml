@@ -1,6 +1,6 @@
 [package]
 name = "fixed_circular_buffer"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Lolirofle <lolipopple@hotmail.com>"]
 description = "A queue (the abstract data structure) implemented using a fixed size circular buffer"
 #documentation = "..."

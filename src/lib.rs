@@ -68,12 +68,12 @@ impl<T> CircularBuffer<T>{
 
 	///Returns an iterator over the buffer looping around at the end.
 	///This creates a never ending iterator
-	pub fn iter_circular<'s>(&'s self) -> iter::Skip<iter::Cycle<slice::Iter<'s,T>>>{
+	pub fn iter_circular<'s>(&'s self) -> IterCircular<'s,T>{
 		self.list.iter().cycle().skip(self.first)
 	}
 
 	///Returns an iterator over the buffer without looping around.
-	pub fn iter<'s>(&'s self) -> iter::Take<iter::Skip<iter::Cycle<slice::Iter<'s,T>>>>{
+	pub fn iter<'s>(&'s self) -> Iter<'s,T>{
 		self.iter_circular().take(self.len())
 	}
 
@@ -124,6 +124,9 @@ impl<T> FromIterator<T> for CircularBuffer<T>{
 		CircularBuffer::from(Vec::from_iter(i))
 	}
 }
+
+pub type Iter<'t,T> = iter::Take<IterCircular<'t,T>>;
+pub type IterCircular<'t,T> = iter::Skip<iter::Cycle<slice::Iter<'t,T>>>;
 
 #[test]
 fn test_len(){
