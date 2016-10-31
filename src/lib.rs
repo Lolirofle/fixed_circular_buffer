@@ -1,5 +1,3 @@
-#![feature(core)]
-
 extern crate core;
 
 use core::iter::FromIterator;
