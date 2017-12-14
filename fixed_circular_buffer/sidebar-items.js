@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CircularBuffer","Fixed size circular/cyclic/ring buffer"]]});
+initSidebarItems({"mod":[["iters",""]],"struct":[["CircularBuffer","Fixed size circular/cyclic/ring buffer"]],"type":[["Iter",""],["IterCircular",""]]});

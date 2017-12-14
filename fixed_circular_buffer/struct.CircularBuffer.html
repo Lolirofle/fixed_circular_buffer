@@ -9,12 +9,15 @@
 
     <title>fixed_circular_buffer::CircularBuffer - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
+    
 
     
     
 </head>
-<body class="rustdoc">
+<body class="rustdoc struct">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -24,10 +27,10 @@
 
     
 
-    <section class="sidebar">
+    <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>fixed_circular_buffer</a></p><script>window.sidebarCurrent = {name: 'CircularBuffer', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
-    </section>
+        <p class='location'>Struct CircularBuffer</p><div class="block items"><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.from_raw_parts">from_raw_parts</a><a href="#method.into_raw_parts">into_raw_parts</a><a href="#method.len">len</a><a href="#method.iter_circular">iter_circular</a><a href="#method.iter">iter</a><a href="#method.internal_index">internal_index</a><a href="#method.get">get</a><a href="#method.internal_index_reversed">internal_index_reversed</a><a href="#method.swap">swap</a><a href="#method.queue">queue</a><a href="#method.set_first">set_first</a><a href="#method.get_mut">get_mut</a><a href="#method.swap_internal">swap_internal</a><a href="#method.swap_at">swap_at</a><a href="#method.queue_reversed">queue_reversed</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-Copy">Copy</a><a href="#impl-Clone">Clone</a><a href="#impl-Debug">Debug</a><a href="#impl-Eq">Eq</a><a href="#impl-PartialEq">PartialEq</a><a href="#impl-Hash">Hash</a><a href="#impl-From%3CVec%3CT%3E%3E">From&lt;Vec&lt;T&gt;&gt;</a><a href="#impl-From%3CL%3E">From&lt;L&gt;</a><a href="#impl-FromIterator%3CT%3E">FromIterator&lt;T&gt;</a></div></div><p class='location'><a href='index.html'>fixed_circular_buffer</a></p><script>window.sidebarCurrent = {name: 'CircularBuffer', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
 
     <nav class="sub">
         <form class="search-form js-only">
@@ -40,89 +43,135 @@
         </form>
     </nav>
 
-    <section id='main' class="content struct">
-<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>fixed_circular_buffer</a>::<wbr><a class='struct' href=''>CircularBuffer</a></span><span class='out-of-band'><span id='render-detail'>
-            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
-                [<span class='inner'>&#x2212;</span>]
-            </a>
-        </span><a id='src-10' class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#15-18' title='goto source code'>[src]</a></span></h1>
-<pre class='rust struct'>pub struct CircularBuffer&lt;T&gt; {
-    // some fields omitted
-}</pre><div class='docblock'><p>Fixed size circular/cyclic/ring buffer</p>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>fixed_circular_buffer</a>::<wbr><a class="struct" href=''>CircularBuffer</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#21-25' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct CircularBuffer&lt;T, L&nbsp;=&nbsp;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">[</a>T<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>&gt;&gt; { /* fields omitted */ }</pre><div class='docblock'><p>Fixed size circular/cyclic/ring buffer</p>
 
-<p>A FIFO (first in, first out) queue.
-It cannot represent an empty buffer.</p>
+<p>Almost a FIFO (first in, first out) queue.
+· It cannot represent an empty buffer.
+· The queue is always filled (Cannot dequeue without queueing).</p>
 
-<p>When constructed, the internal <code>list</code> must not be empty, and cannot contain invalid (e.g. uninitialized) elements.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;T&gt; <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt;</code></h3><div class='impl-items'><h4 id='method.len' class='method'><code>fn <a href='#method.len' class='fnname'>len</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h4>
-<div class='docblock'><p>Returns the number of elements (before starting to loop around).</p>
-</div><h4 id='method.queue' class='method'><code>fn <a href='#method.queue' class='fnname'>queue</a>(&amp;mut self, elem: T) -&gt; T</code></h4>
-<div class='docblock'><p>Enqueues (push at beginning) the given element at the beginning of the buffer
-Dequeues (pop at end) the last element and returns it
-This keeps the the buffer length</p>
-</div><h4 id='method.set_first' class='method'><code>fn <a href='#method.set_first' class='fnname'>set_first</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h4>
-<div class='docblock'><p>Sets the offset for the first element, relative to the currently first element
-When <code>index</code> is out of range, it loops around</p>
-</div><h4 id='method.get' class='method'><code>fn <a href='#method.get' class='fnname'>get</a>(&amp;self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; &amp;T</code></h4>
-<div class='docblock'><p>Returns a reference to the element at the given index
-When <code>index</code> is out of range, it loops around</p>
-</div><h4 id='method.get_mut' class='method'><code>fn <a href='#method.get_mut' class='fnname'>get_mut</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; &amp;mut T</code></h4>
-<div class='docblock'><p>Returns a mutable reference to the element at the given index
-When <code>index</code> is out of range, it loops around</p>
-</div><h4 id='method.swap_internal' class='method'><code>fn <a href='#method.swap_internal' class='fnname'>swap_internal</a>(&amp;mut self, a: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, b: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h4>
-<div class='docblock'><p>Swaps the two elements at the given indices <code>a</code> and <code>b</code>.
-When <code>a</code> or <code>b</code> are out of range, they loop around</p>
-</div><h4 id='method.swap' class='method'><code>fn <a href='#method.swap' class='fnname'>swap</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, elem: T) -&gt; T</code></h4>
-<div class='docblock'><p>Swaps the element at the given index with the specifiied new one.
-When <code>a</code> or <code>b</code> are out of range, they loop around</p>
-</div><h4 id='method.iter_circular' class='method'><code>fn <a href='#method.iter_circular' class='fnname'>iter_circular</a>&lt;'s&gt;(&amp;'s self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/core/iter/struct.Skip.html' title='core::iter::Skip'>Skip</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/core/iter/struct.Cycle.html' title='core::iter::Cycle'>Cycle</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/core/slice/struct.Iter.html' title='core::slice::Iter'>Iter</a>&lt;'s, T&gt;&gt;&gt;</code></h4>
-<div class='docblock'><p>Returns an iterator over the buffer looping around at the end.
-This creates a never ending iterator</p>
-</div><h4 id='method.iter' class='method'><code>fn <a href='#method.iter' class='fnname'>iter</a>&lt;'s&gt;(&amp;'s self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/core/iter/struct.Take.html' title='core::iter::Take'>Take</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/core/iter/struct.Skip.html' title='core::iter::Skip'>Skip</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/core/iter/struct.Cycle.html' title='core::iter::Cycle'>Cycle</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/core/slice/struct.Iter.html' title='core::slice::Iter'>Iter</a>&lt;'s, T&gt;&gt;&gt;&gt;</code></h4>
-<div class='docblock'><p>Returns an iterator over the buffer without looping around.</p>
-</div><h4 id='method.from_raw_parts' class='method'><code>unsafe fn <a href='#method.from_raw_parts' class='fnname'>from_raw_parts</a>(list: <a class='struct' href='http://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>[T]</a>&gt;, first: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self</code></h4>
-<div class='docblock'><p>Constructs the structure from its raw components</p>
+<p>When constructed, the internal <code>list</code> must not be empty.</p>
+</div>
+                    <h2 id='methods' class='small-section-header'>
+                      Methods<a href='#methods' class='anchor'></a>
+                    </h2>
+                <h3 id='impl' class='impl'><span class='in-band'><code>impl&lt;T, L&gt; <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;</code><a href='#impl' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#27-43' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.from_raw_parts' class="method"><span id='from_raw_parts.v' class='invisible'><code>pub unsafe fn <a href='#method.from_raw_parts' class='fnname'>from_raw_parts</a>(list: L, first: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#34-36' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Constructs the structure from its raw components.</p>
 
-<h1 id="unsafety" class='section-header'><a
-                           href="#unsafety">Unsafety</a></h1>
-<p>This function is unsafe as there is no guarantee that <code>first</code> &lt; <code>list.len()</code>, nor whether <code>list</code> is non-empty.</p>
-</div><h4 id='method.into_raw_parts' class='method'><code>fn <a href='#method.into_raw_parts' class='fnname'>into_raw_parts</a>(self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='struct' href='http://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>[T]</a>&gt;, <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</a></code></h4>
+<h1 id='unsafety' class='section-header'><a href='#unsafety'>Unsafety</a></h1>
+<p>This function is unsafe as there is no guarantee that <code>first &lt; list.len()</code>, nor whether <code>list</code> is non-empty.</p>
+</div><h4 id='method.into_raw_parts' class="method"><span id='into_raw_parts.v' class='invisible'><code>pub fn <a href='#method.into_raw_parts' class='fnname'>into_raw_parts</a>(self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a>L, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#40-42' title='goto source code'>[src]</a></span></h4>
 <div class='docblock'><p>Deconstructs the structure into its raw components</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;T&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;T&gt;&gt; for <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt;</code></h3><div class='impl-items'><h4 id='method.from' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(vec: <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;T&gt;) -&gt; Self</code></h4>
-</div><h3 class='impl'><code>impl&lt;T&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/convert/trait.From.html' title='core::convert::From'>From</a>&lt;<a class='struct' href='http://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>[T]</a>&gt;&gt; for <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt;</code></h3><div class='impl-items'><h4 id='method.from' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/convert/trait.From.html#method.from' class='fnname'>from</a>(l: <a class='struct' href='http://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>[T]</a>&gt;) -&gt; Self</code></h4>
-</div><h3 class='impl'><code>impl&lt;T&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.FromIterator.html' title='core::iter::FromIterator'>FromIterator</a>&lt;T&gt; for <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt;</code></h3><div class='impl-items'><h4 id='method.from_iter' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/iter/trait.FromIterator.html#method.from_iter' class='fnname'>from_iter</a>&lt;I&gt;(i: I) -&gt; Self <span class='where'>where I: <a class='trait' href='http://doc.rust-lang.org/nightly/core/iter/trait.IntoIterator.html' title='core::iter::IntoIterator'>IntoIterator</a>&lt;Item=T&gt;</span></code></h4>
-</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/hash/trait.Hash.html' title='core::hash::Hash'>Hash</a>&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/hash/trait.Hash.html' title='core::hash::Hash'>Hash</a> for <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt; <span class='where'>where T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/hash/trait.Hash.html' title='core::hash::Hash'>Hash</a></span></code></h3><div class='impl-items'><h4 id='method.hash' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#method.hash' class='fnname'>hash</a>&lt;__H: <a class='trait' href='http://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html' title='core::hash::Hasher'>Hasher</a>&gt;(&amp;self, __arg_0: &amp;mut __H)</code></h4>
-<h4 id='method.hash_slice' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#method.hash_slice' class='fnname'>hash_slice</a>&lt;H&gt;(data: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[Self]</a>, state: &amp;mut H) <span class='where'>where H: <a class='trait' href='http://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html' title='core::hash::Hasher'>Hasher</a></span></code></h4>
-</div><h3 class='impl'><code>impl&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a>&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a> for <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt; <span class='where'>where T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a></span></code></h3><div class='impl-items'><h4 id='method.eq' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt;) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
-<h4 id='method.ne' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, __arg_0: &amp;<a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt;) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
-</div><h3 class='impl'><code>impl&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html' title='core::cmp::Eq'>Eq</a>&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html' title='core::cmp::Eq'>Eq</a> for <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt; <span class='where'>where T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html' title='core::cmp::Eq'>Eq</a></span></code></h3><div class='impl-items'></div><h3 class='impl'><code>impl&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a>&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt; <span class='where'>where T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../fixed_circular_buffer/struct.CircularBuffer.html' title='fixed_circular_buffer::CircularBuffer'>CircularBuffer</a>&lt;T&gt;</code></h4>
-<h4 id='method.clone_from' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
-</div></section>
+</div></div><h3 id='impl-1' class='impl'><span class='in-band'><code>impl&lt;T, L&gt; <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;L: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html" title="trait core::ops::deref::Deref">Deref</a>&lt;Target = <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">[</a>T<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>&gt;,&nbsp;</span></code><a href='#impl-1' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#45-98' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.len' class="method"><span id='len.v' class='invisible'><code>pub fn <a href='#method.len' class='fnname'>len</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#54' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns the number of elements (before starting to loop around).</p>
+</div><h4 id='method.iter_circular' class="method"><span id='iter_circular.v' class='invisible'><code>pub fn <a href='#method.iter_circular' class='fnname'>iter_circular</a>&lt;'s&gt;(&amp;'s self) -&gt; <a class="type" href="../fixed_circular_buffer/type.IterCircular.html" title="type fixed_circular_buffer::IterCircular">IterCircular</a>&lt;'s, T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#60-62' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns an iterator over the buffer looping around at the end.
+This iterator is initially iterating from the most recently queued element to the oldest, and then looping around (relative to <code>queue</code>).
+This creates a never ending iterator</p>
+</div><h4 id='method.iter' class="method"><span id='iter.v' class='invisible'><code>pub fn <a href='#method.iter' class='fnname'>iter</a>&lt;'s&gt;(&amp;'s self) -&gt; <a class="type" href="../fixed_circular_buffer/type.Iter.html" title="type fixed_circular_buffer::Iter">Iter</a>&lt;'s, T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#67-69' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns an iterator over the buffer without looping around.
+Iterates from the most recently queued element to the oldest queued element (relative to <code>queue</code>).</p>
+</div><h4 id='method.internal_index' class="method"><span id='internal_index.v' class='invisible'><code>pub fn <a href='#method.internal_index' class='fnname'>internal_index</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#77-79' title='goto source code'>[src]</a></span></h4>
+<h4 id='method.get' class="method"><span id='get.v' class='invisible'><code>pub fn <a href='#method.get' class='fnname'>get</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>T</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#85-87' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns a reference to the element at the given index.
+Smaller indices are more recently queued elements (relative to <code>queue</code>) (0 is the newest).
+When <code>index</code> is out of range, it loops around.</p>
+</div><h4 id='method.internal_index_reversed' class="method"><span id='internal_index_reversed.v' class='invisible'><code>pub fn <a href='#method.internal_index_reversed' class='fnname'>internal_index_reversed</a>(&amp;self, index: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#94-97' title='goto source code'>[src]</a></span></h4>
+</div><h3 id='impl-2' class='impl'><span class='in-band'><code>impl&lt;T, L&gt; <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;L: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.DerefMut.html" title="trait core::ops::deref::DerefMut">DerefMut</a>&lt;Target = <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">[</a>T<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>&gt;,&nbsp;</span></code><a href='#impl-2' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#100-170' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.swap' class="method"><span id='swap.v' class='invisible'><code>pub fn <a href='#method.swap' class='fnname'>swap</a>(&amp;mut self, elem: T) -&gt; T</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#109-112' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Swaps the most recently queued element.</p>
+</div><h4 id='method.queue' class="method"><span id='queue.v' class='invisible'><code>pub fn <a href='#method.queue' class='fnname'>queue</a>(&amp;mut self, elem: T) -&gt; T</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#120-124' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Enqueues (push at beginning) the given element at the beginning of the buffer.
+Dequeues (pop at end) the last element and returns it.</p>
+</div><h4 id='method.set_first' class="method"><span id='set_first.v' class='invisible'><code>pub fn <a href='#method.set_first' class='fnname'>set_first</a>(&amp;mut self, index: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#130-132' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Sets the offset for the first element, relative to the currently first element.
+Smaller indices are more recently queued elements (relative to <code>queue</code>) (0 is the newest).
+When <code>index</code> is out of range, it loops around.</p>
+</div><h4 id='method.get_mut' class="method"><span id='get_mut.v' class='invisible'><code>pub fn <a href='#method.get_mut' class='fnname'>get_mut</a>(&amp;mut self, index: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>T</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#138-141' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns a mutable reference to the element at the given index.
+Smaller indices are more recently queued elements (relative to <code>queue</code>) (0 is the newest).
+When <code>index</code> is out of range, it loops around.</p>
+</div><h4 id='method.swap_internal' class="method"><span id='swap_internal.v' class='invisible'><code>pub fn <a href='#method.swap_internal' class='fnname'>swap_internal</a>(&amp;mut self, a: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, b: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#147-151' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Swaps the two elements at the given indices <code>a</code> and <code>b</code>.
+Smaller indices are more recently queued elements (relative to <code>queue</code>) (0 is the newest).
+When <code>a</code> or <code>b</code> are out of range, they loop around.</p>
+</div><h4 id='method.swap_at' class="method"><span id='swap_at.v' class='invisible'><code>pub fn <a href='#method.swap_at' class='fnname'>swap_at</a>(&amp;mut self, index: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, elem: T) -&gt; T</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#156-159' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Swaps the element at the given index with the specifiied new one.
+When <code>a</code> or <code>b</code> are out of range, they loop around.</p>
+</div><h4 id='method.queue_reversed' class="method"><span id='queue_reversed.v' class='invisible'><code>pub fn <a href='#method.queue_reversed' class='fnname'>queue_reversed</a>(&amp;mut self, elem: T) -&gt; T</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#165-169' title='goto source code'>[src]</a></span></h4>
+</div>
+            <h2 id='implementations' class='small-section-header'>
+              Trait Implementations<a href='#implementations' class='anchor'></a>
+            </h2>
+        <h3 id='impl-Copy' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>, L:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;</code><a href='#impl-Copy' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a>, L:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;</code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class="method"><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/clone.rs.html#112-114' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div><h3 id='impl-Debug' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a>, L:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;</code><a href='#impl-Debug' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>
+</div></div><h3 id='impl-Eq' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html" title="trait core::cmp::Eq">Eq</a>, L:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html" title="trait core::cmp::Eq">Eq</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html" title="trait core::cmp::Eq">Eq</a> for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;</code><a href='#impl-Eq' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 id='impl-PartialEq' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a>, L:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a> for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;</code><a href='#impl-PartialEq' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.eq' class="method"><span id='eq.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq' class='fnname'>eq</a>(&amp;self, __arg_0: &amp;<a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This method tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>. <a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#tymethod.eq">Read more</a></p>
+</div><h4 id='method.ne' class="method"><span id='ne.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, __arg_0: &amp;<a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>This method tests for <code>!=</code>.</p>
+</div></div><h3 id='impl-Hash' class='impl'><span class='in-band'><code>impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html" title="trait core::hash::Hash">Hash</a>, L:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html" title="trait core::hash::Hash">Hash</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html" title="trait core::hash::Hash">Hash</a> for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt;</code><a href='#impl-Hash' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.hash' class="method"><span id='hash.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash' class='fnname'>hash</a>&lt;__HTL:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html" title="trait core::hash::Hasher">Hasher</a>&gt;(&amp;self, __arg_0: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>__HTL)</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#20' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Feeds this value into the given [<code>Hasher</code>]. <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash">Read more</a></p>
+</div><h4 id='method.hash_slice' class="method"><span id='hash_slice.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#method.hash_slice' class='fnname'>hash_slice</a>&lt;H&gt;(data: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[Self]</a>, state: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>H) <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;H: <a class="trait" href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html" title="trait core::hash::Hasher">Hasher</a>,&nbsp;</span></code></span><span class='out-of-band'><div class='ghost'></div><div class='since' title='Stable since Rust version 1.3.0'>1.3.0</div><a class='srclink' href='https://doc.rust-lang.org/nightly/src/core/hash/mod.rs.html#202-208' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Feeds a slice of this type into the given [<code>Hasher</code>]. <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#method.hash_slice">Read more</a></p>
+</div></div><h3 id='impl-From%3CVec%3CT%3E%3E' class='impl'><span class='in-band'><code>impl&lt;T&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html" title="trait core::convert::From">From</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;T&gt;&gt; for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T&gt;</code><a href='#impl-From%3CVec%3CT%3E%3E' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#188-200' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.from' class="method"><span id='from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(vec: <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;T&gt;) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#192-199' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Constructs an already filled circular buffer from the elements in a vec.
+The first element in the Vec will be interpreted as the most reecntly queued element, and the last element as the oldest.</p>
+</div></div><h3 id='impl-From%3CL%3E' class='impl'><span class='in-band'><code>impl&lt;T, L&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html" title="trait core::convert::From">From</a>&lt;L&gt; for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T, L&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;L: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html" title="trait core::ops::deref::Deref">Deref</a>&lt;Target = <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">[</a>T<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>&gt;,&nbsp;</span></code><a href='#impl-From%3CL%3E' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#202-214' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.from-1' class="method"><span id='from.v-1' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(l: L) -&gt; Self</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#206-213' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Performs the conversion.</p>
+</div></div><h3 id='impl-FromIterator%3CT%3E' class='impl'><span class='in-band'><code>impl&lt;T&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/trait.FromIterator.html" title="trait core::iter::traits::FromIterator">FromIterator</a>&lt;T&gt; for <a class="struct" href="../fixed_circular_buffer/struct.CircularBuffer.html" title="struct fixed_circular_buffer::CircularBuffer">CircularBuffer</a>&lt;T&gt;</code><a href='#impl-FromIterator%3CT%3E' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#216-223' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.from_iter' class="method"><span id='from_iter.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/traits/trait.FromIterator.html#tymethod.from_iter' class='fnname'>from_iter</a>&lt;I&gt;(i: I) -&gt; Self <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;I: <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/trait.IntoIterator.html" title="trait core::iter::traits::IntoIterator">IntoIterator</a>&lt;Item = T&gt;,&nbsp;</span></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/fixed_circular_buffer/lib.rs.html#218-222' title='goto source code'>[src]</a></span></h4>
+<div class='docblock'><p>Creates a value from an iterator. <a href="https://doc.rust-lang.org/nightly/core/iter/traits/trait.FromIterator.html#tymethod.from_iter">Read more</a></p>
+</div></div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
 
-    <div id="help" class="hidden">
+    <aside id="help" class="hidden">
         <div>
+            <h1 class="hidden">Help</h1>
+
             <div class="shortcuts">
-                <h1>Keyboard Shortcuts</h1>
+                <h2>Keyboard Shortcuts</h2>
 
                 <dl>
                     <dt>?</dt>
                     <dd>Show this help dialog</dd>
                     <dt>S</dt>
                     <dd>Focus the search field</dd>
-                    <dt>&larrb;</dt>
+                    <dt>↑</dt>
                     <dd>Move up in search results</dd>
-                    <dt>&rarrb;</dt>
+                    <dt>↓</dt>
                     <dd>Move down in search results</dd>
+                    <dt>↹</dt>
+                    <dd>Switch tab</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt style="width:31px;">+ / -</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
             <div class="infos">
-                <h1>Search Tricks</h1>
+                <h2>Search Tricks</h2>
 
                 <p>
                     Prefix searches with a type followed by a colon (e.g.
@@ -132,28 +181,25 @@ This creates a never ending iterator</p>
                 <p>
                     Accepted types are: <code>fn</code>, <code>mod</code>,
                     <code>struct</code>, <code>enum</code>,
-                    <code>trait</code>, <code>typedef</code> (or
-                    <code>tdef</code>).
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
                 </p>
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
-    </div>
+    </aside>
 
     
 
     <script>
         window.rootPath = "../";
         window.currentCrate = "fixed_circular_buffer";
-        window.playgroundUrl = "";
     </script>
-    <script src="../jquery.js"></script>
     <script src="../main.js"></script>
-    
-    <script async src="../search-index.js"></script>
+    <script defer src="../search-index.js"></script>
 </body>
 </html>
